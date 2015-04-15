@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL" uuid="7c618164-603e-471d-b766-31d42f521d13">
+    <database-info product="MySQL" version="5.6.23" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
+    <schema name="" catalog="sakila"/>
+    <table name="Customer" schema="" catalog="sakila" type="TABLE">
+      <column name="IDCustomer" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="Name" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="LastName" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="Address" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="E-mail" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="IDCustomer"/>
+      <exported-key name="fk_Order_Customer1" table="Order" schema="" catalog="sakila" columns="Customer_IDCustomer"/>
+      <index name="Address_UNIQUE" unique="true" columns="Address"/>
+    </table>
+    <table name="Order" schema="" catalog="sakila" type="TABLE">
+      <column name="IDOrder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="DeadLine" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="Customer_IDCustomer" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="IDOrder"/>
+      <foreign-key name="fk_Order_Customer1" columns="Customer_IDCustomer" ref-table="Customer" ref-schema="" ref-catalog="sakila" ref-columns="IDCustomer" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_Product_has_Order_Order1" table="Order_has_Template" schema="" catalog="sakila" columns="Order_IDOrder"/>
+      <exported-key name="fk_OwnerTemplate_Order1" table="OwnerTemplate" schema="" catalog="sakila" columns="Order_IDOrder"/>
+      <index name="fk_Order_Customer1_idx" unique="false" columns="Customer_IDCustomer"/>
+    </table>
+    <table name="Order_has_Template" schema="" catalog="sakila" type="TABLE">
+      <column name="Product_IDProduct" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="Order_IDOrder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="Number" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="Product_IDProduct,Order_IDOrder"/>
+      <foreign-key name="fk_Product_has_Order_Order1" columns="Order_IDOrder" ref-table="Order" ref-schema="" ref-catalog="sakila" ref-columns="IDOrder" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_Product_has_Order_Product1" columns="Product_IDProduct" ref-table="Template" ref-schema="" ref-catalog="sakila" ref-columns="IDTemplate" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="fk_Product_has_Order_Order1_idx" unique="false" columns="Order_IDOrder"/>
+      <index name="fk_Product_has_Order_Product1_idx" unique="false" columns="Product_IDProduct"/>
+    </table>
+    <table name="OwnerTemplate" schema="" catalog="sakila" type="TABLE">
+      <column name="IDOwnerTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="Name" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="Note" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="Order_IDOrder" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="IDOwnerTemplate"/>
+      <foreign-key name="fk_OwnerTemplate_Order1" columns="Order_IDOrder" ref-table="Order" ref-schema="" ref-catalog="sakila" ref-columns="IDOrder" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="fk_OwnerTemplate_Order1_idx" unique="false" columns="Order_IDOrder"/>
+    </table>
+    <table name="Product" schema="" catalog="sakila" type="TABLE">
+      <column name="IDProduct" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="Name" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="Type" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="IDProduct"/>
+      <exported-key name="fk_Product_CompanyManufacturing1" table="Template" schema="" catalog="sakila" columns="IDProduct"/>
+      <index name="Name_UNIQUE" unique="true" columns="Name"/>
+    </table>
+    <table name="Template" schema="" catalog="sakila" type="TABLE">
+      <column name="IDTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="Name" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
+      <column name="Type" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="Format" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="Size" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="IDProduct" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="IDTemplate"/>
+      <foreign-key name="fk_Product_CompanyManufacturing1" columns="IDProduct" ref-table="Product" ref-schema="" ref-catalog="sakila" ref-columns="IDProduct" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_Product_has_Order_Product1" table="Order_has_Template" schema="" catalog="sakila" columns="Product_IDProduct"/>
+      <index name="Name_UNIQUE" unique="true" columns="Name"/>
+      <index name="fk_Product_CompanyManufacturing1_idx" unique="false" columns="IDProduct"/>
+    </table>
+  </data-source>
+</component>
