@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "by.bsuir.acc_reg_system.entity.Template" table = "Template" catalog = "sakila">
+        <id name = "IdTemplate" column = "IDTemplate" type = "java.lang.Integer"></id>
+        <property column="Name" name="name" type="java.lang.String"/>
+        <property column="Type" name="type" type="java.lang.String"/>
+        <property column="Format" name="format" type="java.lang.String"/>
+        <property column="Size" name="size" type="java.lang.String"/>
+
+        <set name = "orders" table="Order_has_Template" lazy = "false">
+            <key column = "IDTemplate"/>
+            <many-to-many column="Order_IDOrder" class="by.bsuir.acc_reg_system.entity.Order"/>
+        </set>
+
+        <many-to-one name="product" class="by.bsuir.acc_reg_system.entity.Product" column="IDProduct" />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "by.bsuir.acc_reg_system.entity.Product" table = "Product" catalog = "sakila">
+        <id name = "IdProduct" column = "IDProduct" type = "java.lang.Integer"></id>
+        <property column="Name" name="name" type="java.lang.String"/>
+        <property column="Type" name="type" type="java.lang.String"/>
+    </class>
+</hibernate-mapping>

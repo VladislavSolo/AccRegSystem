@@ -1,6 +1,7 @@
 package by.bsuir.acc_reg_system.entity;
 
-import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Vladislav on 15.04.15.
@@ -8,8 +9,26 @@ import java.sql.Date;
 public class Order {
 
     private int IdOrder;
-    private Date deadLine;
+    private String deadLine;
     private Customer customer;
+    private Set templates = new HashSet();
+    private Set ownerTemplates = new HashSet();
+
+    public Set getOwnerTemplates() {
+        return ownerTemplates;
+    }
+
+    public void setOwnerTemplates(Set ownerTemplates) {
+        this.ownerTemplates = ownerTemplates;
+    }
+
+    public Set getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(Set templates) {
+        this.templates = templates;
+    }
 
     public Customer getCustomer() {
         return customer;
@@ -19,11 +38,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public Date getDeadLine() {
+    public String getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(Date deadLine) {
+    public void setDeadLine(String deadLine) {
         this.deadLine = deadLine;
     }
 

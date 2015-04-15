@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "by.bsuir.acc_reg_system.entity.Customer" table = "Customer" catalog = "sakila">
+        <id name = "IdCustomer" column = "IDCustomer" type = "java.lang.Integer"></id>
+        <property column="Name" name="name" type="java.lang.String"/>
+        <property column="LastName" name="lastName" type="java.lang.String"/>
+        <property column="Address" name="address" type="java.lang.String"/>
+        <property column="E-mail" name="e_mail" type="java.lang.String"/>
+        <set name = "orders" lazy = "false">
+            <key column = "IDCustomer"/>
+            <one-to-many class="by.bsuir.acc_reg_system.entity.Order"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -12,7 +12,7 @@ public class Customer {
     private String name;
     private String lastName;
     private String address;
-    private  String e_mail;
+    private String e_mail;
     private Set orders = new HashSet();
 
     public String getAddress() {

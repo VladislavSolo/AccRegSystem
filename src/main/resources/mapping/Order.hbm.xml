@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "by.bsuir.acc_reg_system.entity.Order" table = "Order" catalog = "sakila">
+        <id name = "IdOrder" column = "IDOrder" type = "java.lang.Integer"></id>
+        <property column="DeadLine" name="deadLine" type="java.lang.String"/>
+
+        <set name = "templates" table="Order_has_Template" lazy = "false">
+            <key column = "IDOrder"/>
+            <many-to-many column="Template_IDTemplate" class="by.bsuir.acc_reg_system.entity.Template"/>
+        </set>
+        <set name = "ownerTemplates" lazy = "false">
+            <key column = "IDOrder"/>
+            <one-to-many class="by.bsuir.acc_reg_system.entity.OwnerTemplate"/>
+        </set>
+    </class>
+</hibernate-mapping>
