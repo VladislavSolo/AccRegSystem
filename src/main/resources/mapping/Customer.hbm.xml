@@ -8,8 +8,8 @@
         <property column="Name" name="name" type="java.lang.String"/>
         <property column="LastName" name="lastName" type="java.lang.String"/>
         <property column="Address" name="address" type="java.lang.String"/>
-        <property column="E-mail" name="e_mail" type="java.lang.String"/>
-        <set name = "orders" lazy = "false">
+        <property column="Email" name="e_mail" type="java.lang.String"/>
+        <set name = "orders" lazy = "true">
             <key column = "IDCustomer"/>
             <one-to-many class="by.bsuir.acc_reg_system.entity.Order"/>
         </set>

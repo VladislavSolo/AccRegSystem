@@ -3,15 +3,15 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name = "by.bsuir.acc_reg_system.entity.Order" table = "Order" catalog = "sakila">
+    <class name = "by.bsuir.acc_reg_system.entity.Order" table = "Orders" catalog = "sakila">
         <id name = "IdOrder" column = "IDOrder" type = "java.lang.Integer"></id>
         <property column="DeadLine" name="deadLine" type="java.lang.String"/>
 
-        <set name = "templates" table="Order_has_Template" lazy = "false">
+        <set name = "templates" table="Order_has_Template" lazy = "true">
             <key column = "IDOrder"/>
             <many-to-many column="Template_IDTemplate" class="by.bsuir.acc_reg_system.entity.Template"/>
         </set>
-        <set name = "ownerTemplates" lazy = "false">
+        <set name = "ownerTemplates" lazy = "true">
             <key column = "IDOrder"/>
             <one-to-many class="by.bsuir.acc_reg_system.entity.OwnerTemplate"/>
         </set>
