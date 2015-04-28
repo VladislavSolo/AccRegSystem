@@ -1,7 +1,6 @@
 package by.bsuir.acc_reg_system.dao;
 
 import by.bsuir.acc_reg_system.entity.Customer;
-import by.bsuir.acc_reg_system.entity.Order;
 
 import java.sql.SQLException;
 import java.util.Collection;

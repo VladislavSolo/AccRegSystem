@@ -4,14 +4,16 @@
 
 <hibernate-mapping>
     <class name = "by.bsuir.acc_reg_system.entity.Customer" table = "Customer" catalog = "sakila">
-        <id name = "IdCustomer" column = "IDCustomer" type = "java.lang.Integer"></id>
+        <id name = "idCustomer" column = "IDCustomer" type = "java.lang.Integer"></id>
         <property column="Name" name="name" type="java.lang.String"/>
         <property column="LastName" name="lastName" type="java.lang.String"/>
         <property column="Address" name="address" type="java.lang.String"/>
         <property column="Email" name="e_mail" type="java.lang.String"/>
+
         <set name = "orders" lazy = "true">
             <key column = "IDCustomer"/>
-            <one-to-many class="by.bsuir.acc_reg_system.entity.Order"/>
+            <one-to-many class="by.bsuir.acc_reg_system.entity.Orders"/>
         </set>
+
     </class>
 </hibernate-mapping>

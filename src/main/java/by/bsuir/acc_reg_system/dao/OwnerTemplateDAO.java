@@ -1,6 +1,6 @@
 package by.bsuir.acc_reg_system.dao;
 
-import by.bsuir.acc_reg_system.entity.Order;
+import by.bsuir.acc_reg_system.entity.Orders;
 import by.bsuir.acc_reg_system.entity.OwnerTemplate;
 
 import java.sql.SQLException;
@@ -16,6 +16,6 @@ public interface OwnerTemplateDAO {
     public OwnerTemplate getOwnerTemplateById(int ownerTemplate_id) throws SQLException;
     public Collection getAllOwnerTemplates() throws SQLException;
     public void deleteOwnerTemplate(OwnerTemplate ownerTemplate) throws SQLException;
-    public Collection getOwnerTemplatesByOrder(Order order) throws SQLException;
+    public Collection getOwnerTemplatesByOrder(Orders orders) throws SQLException;
     //public Collection getBussesByRoute(Route route) throws SQLException;
 }

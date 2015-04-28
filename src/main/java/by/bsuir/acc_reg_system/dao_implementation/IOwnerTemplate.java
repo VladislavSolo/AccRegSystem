@@ -1,7 +1,7 @@
 package by.bsuir.acc_reg_system.dao_implementation;
 
 import by.bsuir.acc_reg_system.dao.OwnerTemplateDAO;
-import by.bsuir.acc_reg_system.entity.Order;
+import by.bsuir.acc_reg_system.entity.Orders;
 import by.bsuir.acc_reg_system.entity.OwnerTemplate;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
 import org.hibernate.Query;
@@ -99,14 +99,14 @@ public class IOwnerTemplate implements OwnerTemplateDAO{
         }
     }
 
-    public Collection getOwnerTemplatesByOrder(Order order) throws SQLException {
+    public Collection getOwnerTemplatesByOrder(Orders orders) throws SQLException {
         Session session = null;
         List ownerTemplates = new ArrayList<OwnerTemplate>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            int idOrder = order.getIdOrder();
-            Query query = session.createQuery("from " + " OwnerTemplate" + " where" + " IDTemplate"+ " = :IDOrder ").setInteger("IDOrder", idOrder);
+            int idOrder = orders.getIdOrder();
+            Query query = session.createQuery("from OwnerTemplate where Orders_IDOrders = :IDOrder ").setInteger("IDOrder", idOrder);
             ownerTemplates = (List<OwnerTemplate>) query.list();
 
         } finally {

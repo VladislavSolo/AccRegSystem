@@ -1,7 +1,8 @@
 package by.bsuir.acc_reg_system.dao_implementation;
 
 import by.bsuir.acc_reg_system.dao.TemplateDAO;
-import by.bsuir.acc_reg_system.entity.Order;
+import by.bsuir.acc_reg_system.entity.Orders;
+import by.bsuir.acc_reg_system.entity.Product;
 import by.bsuir.acc_reg_system.entity.Template;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
 import org.hibernate.Query;
@@ -99,14 +100,14 @@ public class ITemplate implements TemplateDAO{
         }
     }
 
-    public Collection getTemplatesByOrder(Order order) throws SQLException {
+    public Collection getTemplatesByOrder(Orders orders) throws SQLException {
         Session session = null;
         List templates = new ArrayList<Template>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            int idOrder = order.getIdOrder();
-            Query query = session.createQuery("from " + " Template" + " where" + " IDTemplate"+ " = :IDOrder ").setInteger("IDOrder", idOrder);
+            int idOrder = orders.getIdOrder();
+            Query query = session.createQuery("from Template where IDOrder = :IDOrder ").setInteger("IDOrder", idOrder);
             templates = (List<Template>) query.list();
 
         } finally {
@@ -116,4 +117,24 @@ public class ITemplate implements TemplateDAO{
         }
         return templates;
     }
+
+    public Collection getTemplatesByProduct(Product product) throws  SQLException {
+
+        Session session = null;
+        List templates = new ArrayList<Template>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            int idProduct= product.getIdProduct();
+            Query query = session.createQuery("from Template where IDProduct = :IDProduct ").setInteger("IDProduct", idProduct);
+            templates = (List<Template>) query.list();
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return templates;
+    }
+
 }

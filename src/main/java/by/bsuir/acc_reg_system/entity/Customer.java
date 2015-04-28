@@ -1,12 +1,13 @@
 package by.bsuir.acc_reg_system.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by Vladislav on 15.04.15.
  */
-public class Customer {
+public class Customer implements Serializable{
 
     private int IdCustomer;
     private String name;

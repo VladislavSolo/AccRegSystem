@@ -2,7 +2,7 @@ package by.bsuir.acc_reg_system.dao_implementation;
 
 import by.bsuir.acc_reg_system.dao.OrderDAO;
 import by.bsuir.acc_reg_system.entity.Customer;
-import by.bsuir.acc_reg_system.entity.Order;
+import by.bsuir.acc_reg_system.entity.Orders;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class IOrder implements OrderDAO{
 
-    public void addOrder(Order order) throws SQLException {
+    public void addOrder(Orders orders) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(order);
+            session.save(orders);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
@@ -34,12 +34,12 @@ public class IOrder implements OrderDAO{
         }
     }
 
-    public void updateOrder(int order_id, Order order) throws SQLException {
+    public void updateOrder(int order_id, Orders orders) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.update(order);
+            session.update(orders);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
@@ -50,12 +50,12 @@ public class IOrder implements OrderDAO{
         }
     }
 
-    public Order getOrderById(int order_id) throws SQLException {
+    public Orders getOrderById(int order_id) throws SQLException {
         Session session = null;
-        Order order = null;
+        Orders orders = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            order = (Order) session.load(Order.class, order_id);
+            orders = (Orders) session.load(Orders.class, order_id);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         } finally {
@@ -63,15 +63,15 @@ public class IOrder implements OrderDAO{
                 session.close();
             }
         }
-        return order;
+        return orders;
     }
 
     public Collection getAllOrders() throws SQLException {
         Session session = null;
-        List orders = new ArrayList<Order>();
+        List orders = new ArrayList<Orders>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            orders = session.createCriteria(Order.class).list();
+            orders = session.createCriteria(Orders.class).list();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
         } finally {
@@ -82,12 +82,12 @@ public class IOrder implements OrderDAO{
         return orders;
     }
 
-    public void deleteOrder(Order order) throws SQLException {
+    public void deleteOrder(Orders orders) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(order);
+            session.delete(orders);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
@@ -101,13 +101,13 @@ public class IOrder implements OrderDAO{
     public Collection getOrdersByCustomer(Customer customer) throws SQLException {
 
         Session session = null;
-        List orders = new ArrayList<Order>();
+        List orders = new ArrayList<Object[]>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             int idCustomer = customer.getIdCustomer();
-            Query query = session.createQuery("from Orders where Customer_IDCustomer = :IDCustomer").setInteger("IDCustomer", idCustomer);
-            orders = (List<Order>) query.list();
+            Query query = session.createQuery("from Orders where Customer_IDCustomer = :ID ").setInteger("ID", idCustomer);
+            orders = query.list();
 
         } finally {
             if (session != null && session.isOpen()) {

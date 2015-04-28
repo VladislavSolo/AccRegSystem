@@ -1,6 +1,7 @@
 package by.bsuir.acc_reg_system.dao;
 
-import by.bsuir.acc_reg_system.entity.Order;
+import by.bsuir.acc_reg_system.entity.Orders;
+import by.bsuir.acc_reg_system.entity.Product;
 import by.bsuir.acc_reg_system.entity.Template;
 
 import java.sql.SQLException;
@@ -16,6 +17,6 @@ public interface TemplateDAO {
     public Template getTemplateById(int template_id) throws SQLException;
     public Collection getAllTemplates() throws SQLException;
     public void deleteTemplate(Template template) throws SQLException;
-    public Collection getTemplatesByOrder(Order order) throws SQLException;
-    //public Collection getBussesByRoute(Route route) throws SQLException;
+    public Collection getTemplatesByOrder(Orders orders) throws SQLException;
+    public Collection getTemplatesByProduct(Product product) throws  SQLException;
 }

@@ -107,7 +107,7 @@ public class IProduct implements ProductDAO{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             int idTemplate = template.getIdTemplate();
-            Query query = session.createQuery("from " + " Product" + " where" + " IDProduct"+ " = :IDTemplate ").setInteger("IDTemplate", idTemplate);
+            Query query = session.createQuery("from Product where IDProduct = :IDTemplate ").setInteger("IDTemplate", idTemplate);
             products = (List<Product>) query.list();
 
 

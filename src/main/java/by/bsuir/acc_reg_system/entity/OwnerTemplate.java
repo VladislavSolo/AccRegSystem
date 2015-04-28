@@ -1,14 +1,16 @@
 package by.bsuir.acc_reg_system.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Vladislav on 15.04.15.
  */
-public class OwnerTemplate {
+public class OwnerTemplate implements Serializable {
 
     private int IdOwnerTemplate;
     private String name;
     private String note;
-    private Order order;
+    private Orders orders;
 
     public int getIdOwnerTemplate() {
         return IdOwnerTemplate;
@@ -34,11 +36,11 @@ public class OwnerTemplate {
         this.note = note;
     }
 
-    public Order getOrder() {
-        return order;
+    public Orders getOrders() {
+        return orders;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 }

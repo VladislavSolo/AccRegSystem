@@ -1,12 +1,13 @@
 package by.bsuir.acc_reg_system.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by Vladislav on 15.04.15.
  */
-public class Template {
+public class Template implements Serializable {
 
     private int IdTemplate;
     private String name;
@@ -70,5 +71,11 @@ public class Template {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "TemplateName: " + this.name + " Type: " + this.type + " Format: " + this.format +
+                " Size: " + this.size;
     }
 }

@@ -10,9 +10,13 @@
         <property column="Format" name="format" type="java.lang.String"/>
         <property column="Size" name="size" type="java.lang.String"/>
 
-        <set name = "orders" table="Order_has_Template" lazy = "false">
-            <key column = "IDTemplate"/>
-            <many-to-many column="Order_IDOrder" class="by.bsuir.acc_reg_system.entity.Order"/>
+        <set name="orders" table="Orders" lazy="false" >
+            <key>
+                <column name="IDTemplate" />
+            </key>
+            <many-to-many entity-name="by.bsuir.acc_reg_system.entity.Orders">
+                <column name="IDOrders" />
+            </many-to-many>
         </set>
 
         <many-to-one name="product" class="by.bsuir.acc_reg_system.entity.Product" column="IDProduct" />
