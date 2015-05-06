@@ -4,7 +4,9 @@
 
 <hibernate-mapping>
     <class name = "by.bsuir.acc_reg_system.entity.OwnerTemplate" table = "OwnerTemplate" catalog = "sakila">
-        <id name = "IdOwnerTemplate" column = "IDOwnerTemplate" type = "java.lang.Integer"></id>
+        <id name = "IdOwnerTemplate" column = "IDOwnerTemplate" type = "java.lang.Integer">
+            <generator class="identity"/>
+        </id>
         <property column="Name" name="name" type="java.lang.String"/>
         <property column="Note" name="note" type="java.lang.String"/>
     </class>

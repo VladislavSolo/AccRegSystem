@@ -12,7 +12,7 @@ public class Orders implements Serializable {
     private int IdOrder;
     private String deadLine;
     private Customer customer;
-    private Set templates = new HashSet();
+    private Template template;
     private Set ownerTemplates = new HashSet();
 
     public Set getOwnerTemplates() {
@@ -23,12 +23,12 @@ public class Orders implements Serializable {
         this.ownerTemplates = ownerTemplates;
     }
 
-    public Set getTemplates() {
-        return templates;
+    public Template getTemplate() {
+        return template;
     }
 
-    public void setTemplates(Set templates) {
-        this.templates = templates;
+    public void setTemplate(Template template) {
+        this.template = template;
     }
 
     public Customer getCustomer() {

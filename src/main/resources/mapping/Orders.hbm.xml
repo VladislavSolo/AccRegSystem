@@ -4,26 +4,23 @@
 
 <hibernate-mapping>
     <class name = "by.bsuir.acc_reg_system.entity.Orders" table = "Orders" catalog = "sakila">
-        <id name = "idOrder" column = "IDOrders" type = "java.lang.Integer"></id>
+        <id name = "idOrder" column = "IDOrders" type = "java.lang.Integer">
+            <generator class="identity"/>
+        </id>
         <property column="DeadLine" name="deadLine" type="java.lang.String"/>
 
-        <set name = "ownerTemplates" lazy = "false">
+        <set name = "ownerTemplates" lazy = "true">
             <key column = "Order_IDOrder"/>
             <one-to-many class="by.bsuir.acc_reg_system.entity.OwnerTemplate"/>
         </set>
 
+        <many-to-one name="template" class="by.bsuir.acc_reg_system.entity.Template">
+            <column name="Template_IDTemplate" />
+        </many-to-one>
+
         <many-to-one name="customer" class="by.bsuir.acc_reg_system.entity.Customer">
             <column name="Customer_IDCustomer"/>
         </many-to-one>
-
-        <set name="templates" table="Template" lazy="false" >
-            <key>
-                <column name="IDOrders" />
-            </key>
-            <many-to-many entity-name="by.bsuir.acc_reg_system.entity.Template">
-                <column name="IDTemplate" />
-            </many-to-many>
-        </set>
 
     </class>
 </hibernate-mapping>

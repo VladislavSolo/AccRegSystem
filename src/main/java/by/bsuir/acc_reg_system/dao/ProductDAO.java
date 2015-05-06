@@ -1,5 +1,6 @@
 package by.bsuir.acc_reg_system.dao;
 
+import by.bsuir.acc_reg_system.entity.Customer;
 import by.bsuir.acc_reg_system.entity.Product;
 import by.bsuir.acc_reg_system.entity.Template;
 
@@ -17,5 +18,4 @@ public interface ProductDAO {
     public Collection getAllProducts() throws SQLException;
     public void deleteProduct(Product product) throws SQLException;
     public Collection getProductsByTemplate(Template template) throws SQLException;
-    //public Collection getBussesByRoute(Route route) throws SQLException;
 }

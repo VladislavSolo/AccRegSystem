@@ -3,9 +3,11 @@ package by.bsuir.acc_reg_system.dao_implementation;
 import by.bsuir.acc_reg_system.dao.OrderDAO;
 import by.bsuir.acc_reg_system.entity.Customer;
 import by.bsuir.acc_reg_system.entity.Orders;
+import by.bsuir.acc_reg_system.entity.Template;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -101,12 +103,39 @@ public class IOrder implements OrderDAO{
     public Collection getOrdersByCustomer(Customer customer) throws SQLException {
 
         Session session = null;
-        List orders = new ArrayList<Object[]>();
+        List orders = new ArrayList<Orders>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             int idCustomer = customer.getIdCustomer();
-            Query query = session.createQuery("from Orders where Customer_IDCustomer = :ID ").setInteger("ID", idCustomer);
+
+            Query query = session.createQuery("" +
+                    "from Orders where Customer_IDCustomer = :ID " +
+                    "").setInteger("ID", idCustomer);
+
+            orders = query.list();
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return orders;
+    }
+
+    public Collection getOrdersByTemplateAndCustomer(Template template, Customer customer) throws SQLException {
+
+        Session session = null;
+        List orders = new ArrayList<Orders>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            int idTemplate = template.getIdTemplate();
+            int idCustomer = customer.getIdCustomer();
+            Query query = session.createQuery("" +
+                    "from Orders where Template_IDTemplate = :IDTemplate AND Customer_IDCustomer = :IDCustomer" +
+                    "").setInteger("IDTemplate", idTemplate).setInteger("IDCustomer", idCustomer);
+
             orders = query.list();
 
         } finally {

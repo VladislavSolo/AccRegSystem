@@ -4,21 +4,20 @@
 
 <hibernate-mapping>
     <class name = "by.bsuir.acc_reg_system.entity.Template" table = "Template" catalog = "sakila">
-        <id name = "IdTemplate" column = "IDTemplate" type = "java.lang.Integer"></id>
+        <id name = "IdTemplate" column = "IDTemplate" type = "java.lang.Integer">
+            <generator class="identity"/>
+        </id>
         <property column="Name" name="name" type="java.lang.String"/>
         <property column="Type" name="type" type="java.lang.String"/>
         <property column="Format" name="format" type="java.lang.String"/>
         <property column="Size" name="size" type="java.lang.String"/>
 
-        <set name="orders" table="Orders" lazy="false" >
-            <key>
-                <column name="IDTemplate" />
-            </key>
-            <many-to-many entity-name="by.bsuir.acc_reg_system.entity.Orders">
-                <column name="IDOrders" />
-            </many-to-many>
+        <many-to-one name="product" class="by.bsuir.acc_reg_system.entity.Product" column="IDProduct" />
+
+        <set name = "orders" lazy = "true">
+            <key column = "IDTemplate"/>
+            <one-to-many class="by.bsuir.acc_reg_system.entity.Orders"/>
         </set>
 
-        <many-to-one name="product" class="by.bsuir.acc_reg_system.entity.Product" column="IDProduct" />
     </class>
 </hibernate-mapping>

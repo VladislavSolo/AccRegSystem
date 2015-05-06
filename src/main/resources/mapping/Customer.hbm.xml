@@ -4,11 +4,14 @@
 
 <hibernate-mapping>
     <class name = "by.bsuir.acc_reg_system.entity.Customer" table = "Customer" catalog = "sakila">
-        <id name = "idCustomer" column = "IDCustomer" type = "java.lang.Integer"></id>
+        <id name = "idCustomer" column = "IDCustomer" type = "java.lang.Integer">
+            <generator class="identity"/>
+        </id>
         <property column="Name" name="name" type="java.lang.String"/>
         <property column="LastName" name="lastName" type="java.lang.String"/>
         <property column="Address" name="address" type="java.lang.String"/>
         <property column="Email" name="e_mail" type="java.lang.String"/>
+        <property column="Password" name="password" type="java.lang.String"/>
 
         <set name = "orders" lazy = "true">
             <key column = "IDCustomer"/>

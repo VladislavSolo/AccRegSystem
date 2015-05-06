@@ -8,37 +8,31 @@
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
     <schema name="" catalog="sakila"/>
     <table name="Customer" schema="" catalog="sakila" type="TABLE">
-      <column name="IDCustomer" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="IDCustomer" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="Name" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
       <column name="LastName" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
       <column name="Address" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <column name="Email" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="Password" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="IDCustomer"/>
       <exported-key name="fk_Orders_Customer1" table="Orders" schema="" catalog="sakila" columns="Customer_IDCustomer"/>
       <index name="Address_UNIQUE" unique="true" columns="Address"/>
-    </table>
-    <table name="Order_has_Template" schema="" catalog="sakila" type="TABLE">
-      <column name="IDTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <column name="Number" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
-      <column name="IDOrders" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <primary-key name="PRIMARY" columns="IDTemplate,IDOrders"/>
-      <foreign-key name="fk_Order_has_Template_Orders1" columns="IDOrders" ref-table="Orders" ref-schema="" ref-catalog="sakila" ref-columns="IDOrders" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="fk_Product_has_Order_Product1" columns="IDTemplate" ref-table="Template" ref-schema="" ref-catalog="sakila" ref-columns="IDTemplate" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="fk_Order_has_Template_Orders1_idx" unique="false" columns="IDOrders"/>
-      <index name="fk_Product_has_Order_Product1_idx" unique="false" columns="IDTemplate"/>
+      <index name="E-mail_UNIQUE" unique="true" columns="Email"/>
     </table>
     <table name="Orders" schema="" catalog="sakila" type="TABLE">
-      <column name="IDOrders" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="IDOrders" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="Deadline" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
       <column name="Customer_IDCustomer" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="Template_IDTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="IDOrders"/>
       <foreign-key name="fk_Orders_Customer1" columns="Customer_IDCustomer" ref-table="Customer" ref-schema="" ref-catalog="sakila" ref-columns="IDCustomer" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="fk_Order_has_Template_Orders1" table="Order_has_Template" schema="" catalog="sakila" columns="IDOrders"/>
+      <foreign-key name="fk_Orders_Template1" columns="Template_IDTemplate" ref-table="Template" ref-schema="" ref-catalog="sakila" ref-columns="IDTemplate" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="fk_OwnerTemplate_Orders1" table="OwnerTemplate" schema="" catalog="sakila" columns="Orders_IDOrders"/>
       <index name="fk_Orders_Customer1_idx" unique="false" columns="Customer_IDCustomer"/>
+      <index name="fk_Orders_Template1_idx" unique="false" columns="Template_IDTemplate"/>
     </table>
     <table name="OwnerTemplate" schema="" catalog="sakila" type="TABLE">
-      <column name="IDOwnerTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="IDOwnerTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="Name" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
       <column name="Note" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
       <column name="Orders_IDOrders" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -47,7 +41,7 @@
       <index name="fk_OwnerTemplate_Orders1_idx" unique="false" columns="Orders_IDOrders"/>
     </table>
     <table name="Product" schema="" catalog="sakila" type="TABLE">
-      <column name="IDProduct" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="IDProduct" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="Name" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
       <column name="Type" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="IDProduct"/>
@@ -55,7 +49,7 @@
       <index name="Name_UNIQUE" unique="true" columns="Name"/>
     </table>
     <table name="Template" schema="" catalog="sakila" type="TABLE">
-      <column name="IDTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="IDTemplate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="Name" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
       <column name="Type" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
       <column name="Format" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
@@ -63,7 +57,7 @@
       <column name="IDProduct" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="IDTemplate"/>
       <foreign-key name="fk_Product_CompanyManufacturing1" columns="IDProduct" ref-table="Product" ref-schema="" ref-catalog="sakila" ref-columns="IDProduct" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="fk_Product_has_Order_Product1" table="Order_has_Template" schema="" catalog="sakila" columns="IDTemplate"/>
+      <exported-key name="fk_Orders_Template1" table="Orders" schema="" catalog="sakila" columns="Template_IDTemplate"/>
       <index name="Name_UNIQUE" unique="true" columns="Name"/>
       <index name="fk_Product_CompanyManufacturing1_idx" unique="false" columns="IDProduct"/>
     </table>

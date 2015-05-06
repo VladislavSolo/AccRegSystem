@@ -2,7 +2,9 @@ package by.bsuir.acc_reg_system.dao_implementation;
 
 import by.bsuir.acc_reg_system.dao.CustomerDAO;
 import by.bsuir.acc_reg_system.entity.Customer;
+import by.bsuir.acc_reg_system.entity.OwnerTemplate;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.swing.*;
@@ -53,7 +55,7 @@ public class ICustomer implements CustomerDAO{
         Customer customer = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            customer = (Customer) session.load(Customer.class, customer_id);
+            customer = (Customer) session.get(Customer.class, customer_id);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         } finally {
@@ -95,5 +97,26 @@ public class ICustomer implements CustomerDAO{
                 session.close();
             }
         }
+    }
+
+    public Customer checkEmailAndPassword(String email, String password) {
+
+        Session session = null;
+        Customer customer = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            Query query = session.createQuery("from Customer where Email = :email AND Password = :password")
+                    .setString("email", email).setString("password", password);
+            customer = (Customer)query.uniqueResult();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return customer;
     }
 }

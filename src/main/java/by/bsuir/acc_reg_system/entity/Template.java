@@ -14,8 +14,8 @@ public class Template implements Serializable {
     private String type;
     private String format;
     private String size;
-    private Set orders = new HashSet();
     private Product product;
+    private Set orders = new HashSet();
 
     public String getFormat() {
         return format;
@@ -41,20 +41,20 @@ public class Template implements Serializable {
         this.name = name;
     }
 
-    public Set getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set orders) {
-        this.orders = orders;
-    }
-
     public Product getProduct() {
         return product;
     }
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Set getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set orders) {
+        this.orders = orders;
     }
 
     public String getSize() {

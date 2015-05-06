@@ -5,6 +5,7 @@ import by.bsuir.acc_reg_system.entity.Orders;
 import by.bsuir.acc_reg_system.entity.Product;
 import by.bsuir.acc_reg_system.entity.Template;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -106,8 +107,8 @@ public class ITemplate implements TemplateDAO{
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            int idOrder = orders.getIdOrder();
-            Query query = session.createQuery("from Template where IDOrder = :IDOrder ").setInteger("IDOrder", idOrder);
+            int id = orders.getTemplate().getIdTemplate();
+            Query query = session.createQuery("from Template where IDTemplate = :ID").setInteger("ID", id);
             templates = (List<Template>) query.list();
 
         } finally {

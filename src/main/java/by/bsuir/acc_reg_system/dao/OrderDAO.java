@@ -2,6 +2,7 @@ package by.bsuir.acc_reg_system.dao;
 
 import by.bsuir.acc_reg_system.entity.Customer;
 import by.bsuir.acc_reg_system.entity.Orders;
+import by.bsuir.acc_reg_system.entity.Template;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -17,6 +18,6 @@ public interface OrderDAO {
     public Collection getAllOrders() throws SQLException;
     public void deleteOrder(Orders orders) throws SQLException;
     public Collection getOrdersByCustomer(Customer customer) throws SQLException;
-    //public Collection getOrdersByRoute(Route route) throws SQLException;
+    public Collection getOrdersByTemplateAndCustomer(Template template, Customer customer) throws SQLException;
 
 }

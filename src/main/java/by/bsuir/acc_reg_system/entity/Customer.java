@@ -14,7 +14,16 @@ public class Customer implements Serializable{
     private String lastName;
     private String address;
     private String e_mail;
+    private String password;
     private Set orders = new HashSet();
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getAddress() {
         return address;

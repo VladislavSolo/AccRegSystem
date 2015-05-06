@@ -15,5 +15,5 @@ public interface CustomerDAO {
     public Customer getCustomerById(int customer_id) throws SQLException;
     public Collection getAllCustomers() throws SQLException;
     public void deleteCustomer(Customer customer) throws SQLException;
-    //public Collection getCustomersByOrder(Order order) throws SQLException;
+    public Customer checkEmailAndPassword(String email, String password);
 }

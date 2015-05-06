@@ -1,6 +1,7 @@
 package by.bsuir.acc_reg_system.dao_implementation;
 
 import by.bsuir.acc_reg_system.dao.ProductDAO;
+import by.bsuir.acc_reg_system.entity.Customer;
 import by.bsuir.acc_reg_system.entity.Product;
 import by.bsuir.acc_reg_system.entity.Template;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
@@ -106,11 +107,9 @@ public class IProduct implements ProductDAO{
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            int idTemplate = template.getIdTemplate();
-            Query query = session.createQuery("from Product where IDProduct = :IDTemplate ").setInteger("IDTemplate", idTemplate);
+            int id = template.getProduct().getIdProduct();
+            Query query = session.createQuery("from Product where IDProduct = :ID ").setInteger("ID", id);
             products = (List<Product>) query.list();
-
-
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
