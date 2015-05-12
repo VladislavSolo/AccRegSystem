@@ -89,7 +89,11 @@ public class IProduct implements ProductDAO{
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(product);
+            int id = product.getIdProduct();
+            Query query = session.createQuery("" +
+                    "DELETE FROM Product where IDProduct = :ID" +
+                    "").setInteger("ID", id);
+            int a = query.executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);

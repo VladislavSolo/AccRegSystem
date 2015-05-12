@@ -1,9 +1,10 @@
 package by.bsuir.acc_reg_system.logic;
 
-public class AccountOrder {
+public class TemplatePrinter {
 
     private int idOrder;
     private String deadLine;
+    private int number;
     private String templateName;
     private String templateType;
     private String templateFormat;
@@ -25,6 +26,14 @@ public class AccountOrder {
 
     public void setDeadLine(String deadLine) {
         this.deadLine = deadLine;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getProductType() {

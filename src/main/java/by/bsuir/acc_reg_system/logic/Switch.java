@@ -1,19 +1,24 @@
 package by.bsuir.acc_reg_system.logic;
 
-import by.bsuir.acc_reg_system.entity.Customer;
-import by.bsuir.acc_reg_system.persistence.Factory;
+import by.bsuir.acc_reg_system.logic.comand.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Iterator;
 
 public class Switch {
     private static Switch aSwitch;
+    private HttpSession session;
+
     private PersonalAccount personalAccount;
+    private RegisterCommand registerCommand;
+    private AddOwnerOrderCommand addOwnerOrderCommand;
+    private GetOrdersCommand getOrdersCommand;
+    private DeleteOrderCommand deleteOrderCommand;
+    private AddOrderCommand addOrderCommand;
 
     public static Switch sharedSwitch() {
 
@@ -26,30 +31,62 @@ public class Switch {
         }
     }
 
-    public void addCustomer(HttpServletRequest req) throws SQLException {
+    public void addCommand(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
 
-        Customer customer = new Customer();
-        customer.setName(req.getParameter("name"));
-        customer.setLastName(req.getParameter("lastname"));
-        customer.setAddress(req.getParameter("address"));
-        customer.setE_mail(req.getParameter("email"));
-        customer.setPassword(req.getParameter("password"));
+        this.session = req.getSession();
 
-        Factory.getInstance().getCustomerDAO().addCustomer(customer);
+        String command = req.getParameter("command");
 
-    }
+        if (command.equals("register")) {
 
-    public void logIN(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+            registerCommand = new RegisterCommand();
+            registerCommand.execute(req, resp);
 
-        this.personalAccount = new PersonalAccount();
+        } else if (command.equals("enter")) {
 
-        if (!this.personalAccount.checkAccount(req)) {
+            this.personalAccount = PersonalAccount.sharedAccount();
 
-            req.setAttribute("check", "Incorrect E-mail or Password. Try again!");
-            req.getRequestDispatcher("/enter.jsp").forward(req, resp);
-        } else {
+            if (!this.personalAccount.checkAccount(req, resp)) {
 
-            req.getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+                req.setAttribute("check", "Incorrect E-mail or Password. Try again!");
+                req.getRequestDispatcher("/enter.jsp").forward(req, resp);
+            } else {
+                getOrdersCommand = new GetOrdersCommand();
+                getOrdersCommand.execute(req, resp);
+                req.getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+            }
+
+        } else if (command.equals("addOwnerTemplate")) {
+
+            req.setAttribute("name", this.session.getAttribute("name"));
+            addOwnerOrderCommand = new AddOwnerOrderCommand();
+            addOwnerOrderCommand.execute(req, resp);
+
+            getOrdersCommand = new GetOrdersCommand();
+            getOrdersCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+
+        } else if(command.equals("delete")) {
+
+            deleteOrderCommand = new DeleteOrderCommand();
+            deleteOrderCommand.execute(req, resp);
+
+            getOrdersCommand = new GetOrdersCommand();
+            getOrdersCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+
+        } else if(command.equals("addOrder")) {
+
+            addOrderCommand = new AddOrderCommand();
+            addOrderCommand.execute(req, resp);
+
+            getOrdersCommand = new GetOrdersCommand();
+            getOrdersCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+
         }
     }
 }

@@ -8,6 +8,7 @@
             <generator class="identity"/>
         </id>
         <property column="DeadLine" name="deadLine" type="java.lang.String"/>
+        <property column="Number" name="number" type="java.lang.Integer"/>
 
         <set name = "ownerTemplates" lazy = "true">
             <key column = "Order_IDOrder"/>

@@ -13,6 +13,7 @@ import java.util.Collection;
 public interface OrderDAO {
 
     public void addOrder(Orders orders) throws SQLException;
+    public Orders getLastLine();
     public void updateOrder(int order_id, Orders orders) throws SQLException;
     public Orders getOrderById(int order_id) throws SQLException;
     public Collection getAllOrders() throws SQLException;

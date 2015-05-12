@@ -1,0 +1,17 @@
+package by.bsuir.acc_reg_system.logic.comand;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+
+/**
+ * Created by Vladislav on 11.05.15.
+ */
+public class AuthorizationCommand implements Command {
+
+    @Override
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+
+
+    }
+}

@@ -23,7 +23,13 @@ public class IOwnerTemplate implements OwnerTemplateDAO{
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(ownerTemplate);
+            //session.save(ownerTemplate);
+            session.createSQLQuery("" +
+                    "INSERT INTO sakila.OwnerTemplate (Name, Note, Orders_IDOrders) VALUES ( :owname, :note, :idOrders) " +
+                    "").setParameter("owname", ownerTemplate.getName())
+                       .setParameter("note", ownerTemplate.getNote())
+                       .setParameter("idOrders", ownerTemplate.getOrders().getIdOrder()).
+                    executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);

@@ -34,6 +34,8 @@ public class ICustomer implements CustomerDAO{
         }
     }
 
+
+
     public void updateCustomer(int customer_id, Customer customer) throws SQLException {
         Session session = null;
         try {
@@ -108,6 +110,27 @@ public class ICustomer implements CustomerDAO{
 
             Query query = session.createQuery("from Customer where Email = :email AND Password = :password")
                     .setString("email", email).setString("password", password);
+            customer = (Customer)query.uniqueResult();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return customer;
+    }
+
+    public Customer getCustomerByName(String name) {
+
+        Session session = null;
+        Customer customer = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            Query query = session.createQuery("from Customer where Name = :name ")
+                    .setString("name", name);
             customer = (Customer)query.uniqueResult();
 
         } catch (Exception e) {

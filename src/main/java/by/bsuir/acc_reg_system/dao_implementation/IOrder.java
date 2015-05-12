@@ -36,6 +36,26 @@ public class IOrder implements OrderDAO{
         }
     }
 
+    public Orders getLastLine() {
+
+        Session session = null;
+        Orders orders = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createQuery("from Orders order by IDOrders DESC");
+            query.setMaxResults(1);
+            orders = (Orders)query.uniqueResult();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return orders;
+    }
+
     public void updateOrder(int order_id, Orders orders) throws SQLException {
         Session session = null;
         try {
@@ -57,7 +77,10 @@ public class IOrder implements OrderDAO{
         Orders orders = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            orders = (Orders) session.load(Orders.class, order_id);
+            int id = order_id;
+            Query query = session.createQuery("from Orders where IDOrders = :ID").setInteger("ID", id);
+            orders = (Orders)query.uniqueResult();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         } finally {
@@ -88,9 +111,14 @@ public class IOrder implements OrderDAO{
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(orders);
-            session.getTransaction().commit();
+            int id = orders.getIdOrder();
+            Query query = session.createQuery("" +
+                    "DELETE FROM Orders where IDOrders = :ID" +
+                    "").setInteger("ID", id);
+            int a = query.executeUpdate();
+            session.getTransaction();
+
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
         } finally {

@@ -30,23 +30,13 @@ public class MainServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
 
-        String action = req.getParameter("command");
-
         Switch mySwitch = Switch.sharedSwitch();
 
         try {
-            if (action.equals("register")) {
-
-                mySwitch.addCustomer(req);
-                getServletContext().getRequestDispatcher("/register.jsp").forward(req, resp);
-
-            } else if (action.equals("enter")) {
-
-                mySwitch.logIN(req, resp);
-
-            }
+            mySwitch.addCommand(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }

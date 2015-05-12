@@ -11,6 +11,7 @@ public class Orders implements Serializable {
 
     private int IdOrder;
     private String deadLine;
+    private int number;
     private Customer customer;
     private Template template;
     private Set ownerTemplates = new HashSet();
@@ -45,6 +46,14 @@ public class Orders implements Serializable {
 
     public void setDeadLine(String deadLine) {
         this.deadLine = deadLine;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public int getIdOrder() {
