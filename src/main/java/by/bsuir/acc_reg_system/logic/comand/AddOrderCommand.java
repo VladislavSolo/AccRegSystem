@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
-/**
- * Created by Vladislav on 12.05.15.
- */
 public class AddOrderCommand implements Command {
 
     @Override
@@ -21,7 +18,7 @@ public class AddOrderCommand implements Command {
         String numberString = req.getParameter("orderNumber");
         int number = Integer.parseInt(numberString);
 
-        String customerName = (String) req.getSession(true).getAttribute("name");
+        String email = (String) req.getSession(true).getAttribute("myEmail");
 
         String templateName = req.getParameter("templateName");
         String templateType = req.getParameter("templateType");
@@ -30,45 +27,52 @@ public class AddOrderCommand implements Command {
         String productType = req.getParameter("productType");
         String size;
 
-        if (templateFormat.equals("A1")) {
-            size = "594×841";
-        } else if (templateFormat.equals("A2")) {
-            size = "420×594";
-        } else if (templateFormat.equals("A3")) {
-            size = "297×420";
-        } else if (templateFormat.equals("A4")) {
-            size = "210×297";
-        } else if (templateFormat.equals("A5")) {
-            size = "148×210";
-        } else if (templateFormat.equals("A6")) {
-            size = "105×148";
+        if (templateName == null || templateType == null || templateFormat == null || productName == null || productType == null) {
+
+            req.setAttribute("err","Please enter all fields!");
+
         } else {
-            size = templateFormat;
+
+            if (templateFormat.equals("A1")) {
+                size = "594×841";
+            } else if (templateFormat.equals("A2")) {
+                size = "420×594";
+            } else if (templateFormat.equals("A3")) {
+                size = "297×420";
+            } else if (templateFormat.equals("A4")) {
+                size = "210×297";
+            } else if (templateFormat.equals("A5")) {
+                size = "148×210";
+            } else if (templateFormat.equals("A6")) {
+                size = "105×148";
+            } else {
+                size = templateFormat;
+            }
+
+            Product product = new Product();
+            product.setName(productName);
+            product.setType(productType);
+
+            Factory.getInstance().getProductDAO().addProduct(product);
+
+            Template template = new Template();
+            template.setName(templateName);
+            template.setType(templateType);
+            template.setFormat(templateFormat);
+            template.setSize(size);
+            template.setProduct(product);
+
+            Factory.getInstance().getTemplateDAO().addTemplate(template);
+
+            Customer customer = Factory.getInstance().getCustomerDAO().getCustomerByEmail(email);
+
+            Orders order = new Orders();
+            order.setNumber(number);
+            order.setCustomer(customer);
+            order.setTemplate(template);
+
+            Factory.getInstance().getOrderDAO().addOrder(order);
         }
-
-        Product product = new Product();
-        product.setName(productName);
-        product.setType(productType);
-
-        Factory.getInstance().getProductDAO().addProduct(product);
-
-        Template template = new Template();
-        template.setName(templateName);
-        template.setType(templateType);
-        template.setFormat(templateFormat);
-        template.setSize(size);
-        template.setProduct(product);
-
-        Factory.getInstance().getTemplateDAO().addTemplate(template);
-
-        Customer customer = Factory.getInstance().getCustomerDAO().getCustomerByName(customerName);
-
-        Orders order = new Orders();
-        order.setNumber(number);
-        order.setCustomer(customer);
-        order.setTemplate(template);
-
-        Factory.getInstance().getOrderDAO().addOrder(order);
 
     }
 }

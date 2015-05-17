@@ -21,35 +21,35 @@ public class Factory {
 
     public CustomerDAO getCustomerDAO(){
         if (customerDAO == null){
-            customerDAO = new ICustomer();
+            customerDAO = new CustomerImpl();
         }
         return customerDAO;
     }
 
     public OrderDAO getOrderDAO(){
         if (orderDAO == null){
-            orderDAO = new IOrder();
+            orderDAO = new OrderImpl();
         }
         return orderDAO;
     }
 
     public OwnerTemplateDAO getOwnerTemplateDAO(){
         if (ownerTemplateDAO == null){
-            ownerTemplateDAO = new IOwnerTemplate();
+            ownerTemplateDAO = new OwnerTemplateImpl();
         }
         return ownerTemplateDAO;
     }
 
     public ProductDAO getProductDAO(){
         if (productDAO == null){
-            productDAO = new IProduct();
+            productDAO = new ProductImpl();
         }
         return productDAO;
     }
 
     public TemplateDAO getTemplateDAO(){
         if (templateDAO == null){
-            templateDAO = new ITemplate();
+            templateDAO = new TemplateImpl();
         }
         return templateDAO;
     }

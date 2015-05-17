@@ -2,6 +2,7 @@ package by.bsuir.acc_reg_system.logic;
 
 public class TemplatePrinter {
 
+    private String customerName;
     private int idOrder;
     private String deadLine;
     private int number;
@@ -11,6 +12,14 @@ public class TemplatePrinter {
     private String templateSize;
     private String productName;
     private String productType;
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
     public int getIdOrder() {
         return idOrder;

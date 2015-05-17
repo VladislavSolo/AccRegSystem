@@ -5,38 +5,31 @@ import by.bsuir.acc_reg_system.logic.OwnerPrinter;
 import by.bsuir.acc_reg_system.logic.TemplatePrinter;
 import by.bsuir.acc_reg_system.persistence.Factory;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class GetOrdersCommand implements Command {
+
+public class SearchOrderCommand implements Command {
 
     private static ArrayList<TemplatePrinter> list;
     private static ArrayList<OwnerPrinter> ownerList;
 
-    public GetOrdersCommand() {
+    public SearchOrderCommand() {
 
         list = new ArrayList();
         ownerList = new ArrayList();
     }
 
-
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+
+        String name = req.getParameter("searchName");
 
         String email = (String) req.getSession(true).getAttribute("myEmail");
-
-        String name = (String) req.getSession(true).getAttribute("name");
-
-//        if(name.equals("") && email.equals("")) {
-//
-//            req.getRequestDispatcher("/main.jsp").forward(req, resp);
-//        }
 
         Customer customer = Factory.getInstance().getCustomerDAO().getCustomerByEmail(email);
 
@@ -58,7 +51,7 @@ public class GetOrdersCommand implements Command {
 
             Orders order = (Orders) iterator1.next();
 
-            if (order.getTemplate() != null) {
+            if (order.getTemplate() != null && order.getTemplate().getName().equals(name)) {
 
                 ordersList.add(order);
 
@@ -83,7 +76,7 @@ public class GetOrdersCommand implements Command {
                         productsList.add(product);
                     }
                 }
-            } else {
+            } else if (order.getTemplate() == null) {
 
                 ownerOrdersList.add(order);
 
@@ -118,7 +111,6 @@ public class GetOrdersCommand implements Command {
 
             OwnerPrinter printer = new OwnerPrinter();
             printer.setIdOrder(ownerOrdersList.get(i).getIdOrder());
-            printer.setNumber(ownerOrdersList.get(i).getNumber());
             printer.setName(ownerTemplatesList.get(i).getName());
             printer.setNote(ownerTemplatesList.get(i).getNote());
             ownerList.add(printer);

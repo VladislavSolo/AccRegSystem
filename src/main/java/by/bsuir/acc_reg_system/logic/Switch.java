@@ -13,12 +13,13 @@ public class Switch {
     private static Switch aSwitch;
     private HttpSession session;
 
-    private PersonalAccount personalAccount;
+    private AuthorizationCommand authorizationCommand;
     private RegisterCommand registerCommand;
     private AddOwnerOrderCommand addOwnerOrderCommand;
     private GetOrdersCommand getOrdersCommand;
     private DeleteOrderCommand deleteOrderCommand;
     private AddOrderCommand addOrderCommand;
+    private SearchOrderCommand searchOrderCommand;
 
     public static Switch sharedSwitch() {
 
@@ -42,19 +43,13 @@ public class Switch {
             registerCommand = new RegisterCommand();
             registerCommand.execute(req, resp);
 
+            req.getServletContext().getRequestDispatcher("/enter.jsp").forward(req, resp);
+
+
         } else if (command.equals("enter")) {
 
-            this.personalAccount = PersonalAccount.sharedAccount();
-
-            if (!this.personalAccount.checkAccount(req, resp)) {
-
-                req.setAttribute("check", "Incorrect E-mail or Password. Try again!");
-                req.getRequestDispatcher("/enter.jsp").forward(req, resp);
-            } else {
-                getOrdersCommand = new GetOrdersCommand();
-                getOrdersCommand.execute(req, resp);
-                req.getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
-            }
+            this.authorizationCommand = new AuthorizationCommand();
+            this.authorizationCommand.execute(req, resp);
 
         } else if (command.equals("addOwnerTemplate")) {
 
@@ -65,7 +60,7 @@ public class Switch {
             getOrdersCommand = new GetOrdersCommand();
             getOrdersCommand.execute(req, resp);
 
-            req.getServletContext().getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+            req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
 
         } else if(command.equals("delete")) {
 
@@ -75,9 +70,19 @@ public class Switch {
             getOrdersCommand = new GetOrdersCommand();
             getOrdersCommand.execute(req, resp);
 
-            req.getServletContext().getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+            req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
 
-        } else if(command.equals("addOrder")) {
+        } else if(command.equals("reject")) {
+
+            AdminDeleteOrderCommand adminDeleteOrderCommand = new AdminDeleteOrderCommand();
+            adminDeleteOrderCommand.execute(req, resp);
+
+            AdminGetOrdersCommand adminGetOrdersCommand = new AdminGetOrdersCommand();
+            adminGetOrdersCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/adminTools.jsp").forward(req, resp);
+
+        }else if(command.equals("addOrder")) {
 
             addOrderCommand = new AddOrderCommand();
             addOrderCommand.execute(req, resp);
@@ -85,7 +90,30 @@ public class Switch {
             getOrdersCommand = new GetOrdersCommand();
             getOrdersCommand.execute(req, resp);
 
-            req.getServletContext().getRequestDispatcher("/PersonalAccount.jsp").forward(req, resp);
+            req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
+
+        } else if(command.equals("search")) {
+
+            searchOrderCommand = new SearchOrderCommand();
+            searchOrderCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
+
+        } else if(command.equals("refresh")) {
+
+            getOrdersCommand = new GetOrdersCommand();
+            getOrdersCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
+
+        }  else if(command.equals("logOut")) {
+
+            req.getSession(true).setAttribute("name", "");
+            req.getSession(true).setAttribute("email", "");
+            req.getSession(true).setAttribute("password", "");
+            req.getSession(true).setAttribute("myEmail", "");
+
+            req.getServletContext().getRequestDispatcher("/main.jsp").forward(req, resp);
 
         }
     }

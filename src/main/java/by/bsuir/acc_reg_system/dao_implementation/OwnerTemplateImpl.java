@@ -1,11 +1,9 @@
 package by.bsuir.acc_reg_system.dao_implementation;
 
-import by.bsuir.acc_reg_system.dao.TemplateDAO;
+import by.bsuir.acc_reg_system.dao.OwnerTemplateDAO;
 import by.bsuir.acc_reg_system.entity.Orders;
-import by.bsuir.acc_reg_system.entity.Product;
-import by.bsuir.acc_reg_system.entity.Template;
+import by.bsuir.acc_reg_system.entity.OwnerTemplate;
 import by.bsuir.acc_reg_system.persistence.HibernateUtil;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -18,14 +16,20 @@ import java.util.List;
 /**
  * Created by Vladislav on 15.04.15.
  */
-public class ITemplate implements TemplateDAO{
+public class OwnerTemplateImpl implements OwnerTemplateDAO{
 
-    public void addTemplate(Template template) throws SQLException {
+    public void addOwnerTemplate(OwnerTemplate ownerTemplate) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(template);
+            //session.save(ownerTemplate);
+            session.createSQLQuery("" +
+                    "INSERT INTO sakila.OwnerTemplate (Name, Note, Orders_IDOrders) VALUES ( :owname, :note, :idOrders) " +
+                    "").setParameter("owname", ownerTemplate.getName())
+                       .setParameter("note", ownerTemplate.getNote())
+                       .setParameter("idOrders", ownerTemplate.getOrders().getIdOrder()).
+                    executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
@@ -37,12 +41,12 @@ public class ITemplate implements TemplateDAO{
         }
     }
 
-    public void updateTemplate(int template_id, Template template) throws SQLException {
+    public void updateOwnerTemplate(int ownerTemplate_id, OwnerTemplate ownerTemplate) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.update(template);
+            session.update(ownerTemplate);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
@@ -53,12 +57,12 @@ public class ITemplate implements TemplateDAO{
         }
     }
 
-    public Template getTemplateById(int template_id) throws SQLException {
+    public OwnerTemplate getOwnerTemplateById(int ownerTemplate_id) throws SQLException {
         Session session = null;
-        Template template = null;
+        OwnerTemplate ownerTemplate = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            template = (Template) session.load(Template.class, template_id);
+            ownerTemplate = (OwnerTemplate) session.load(OwnerTemplate.class, ownerTemplate_id);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         } finally {
@@ -66,15 +70,15 @@ public class ITemplate implements TemplateDAO{
                 session.close();
             }
         }
-        return template;
+        return ownerTemplate;
     }
 
-    public Collection getAllTemplates() throws SQLException {
+    public Collection getAllOwnerTemplates() throws SQLException {
         Session session = null;
-        List templates = new ArrayList<Template>();
+        List ownerTemplates = new ArrayList<OwnerTemplate>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            templates = session.createCriteria(Template.class).list();
+            ownerTemplates = session.createCriteria(OwnerTemplate.class).list();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
         } finally {
@@ -82,19 +86,15 @@ public class ITemplate implements TemplateDAO{
                 session.close();
             }
         }
-        return templates;
+        return ownerTemplates;
     }
 
-    public void deleteTemplate(Template template) throws SQLException {
+    public void deleteOwnerTemplate(OwnerTemplate ownerTemplate) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            int id = template.getIdTemplate();
-            Query query = session.createQuery("" +
-                    "DELETE FROM Template where IDTemplate = :ID" +
-                    "").setInteger("ID", id);
-            int a = query.executeUpdate();
+            session.delete(ownerTemplate);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
@@ -105,41 +105,21 @@ public class ITemplate implements TemplateDAO{
         }
     }
 
-    public Collection getTemplatesByOrder(Orders orders) throws SQLException {
+    public Collection getOwnerTemplatesByOrder(Orders orders) throws SQLException {
         Session session = null;
-        List templates = new ArrayList<Template>();
+        List ownerTemplates = new ArrayList<OwnerTemplate>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            int id = orders.getTemplate().getIdTemplate();
-            Query query = session.createQuery("from Template where IDTemplate = :ID").setInteger("ID", id);
-            templates = (List<Template>) query.list();
+            int idOrder = orders.getIdOrder();
+            Query query = session.createQuery("from OwnerTemplate where Orders_IDOrders = :IDOrder ").setInteger("IDOrder", idOrder);
+            ownerTemplates = (List<OwnerTemplate>) query.list();
 
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
             }
         }
-        return templates;
+        return ownerTemplates;
     }
-
-    public Collection getTemplatesByProduct(Product product) throws  SQLException {
-
-        Session session = null;
-        List templates = new ArrayList<Template>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            int idProduct= product.getIdProduct();
-            Query query = session.createQuery("from Template where IDProduct = :IDProduct ").setInteger("IDProduct", idProduct);
-            templates = (List<Template>) query.list();
-
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return templates;
-    }
-
 }
