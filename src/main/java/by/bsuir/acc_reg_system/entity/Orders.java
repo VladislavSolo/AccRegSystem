@@ -10,7 +10,7 @@ import java.util.Set;
 public class Orders implements Serializable {
 
     private int IdOrder;
-    private String deadLine;
+    private String status;
     private int number;
     private Customer customer;
     private Template template;
@@ -40,12 +40,12 @@ public class Orders implements Serializable {
         this.customer = customer;
     }
 
-    public String getDeadLine() {
-        return deadLine;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDeadLine(String deadLine) {
-        this.deadLine = deadLine;
+    public void setStatus(String deadLine) {
+        this.status = deadLine;
     }
 
     public int getNumber() {

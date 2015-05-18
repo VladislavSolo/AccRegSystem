@@ -1,8 +1,5 @@
 package by.bsuir.acc_reg_system.logic;
 
-/**
- * Created by Vladislav on 12.05.15.
- */
 public class OwnerPrinter {
 
     private String customerName;
@@ -10,6 +7,15 @@ public class OwnerPrinter {
     private int number;
     private String name;
     private String note;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getCustomerName() {
         return customerName;

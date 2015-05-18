@@ -101,6 +101,7 @@ public class AdminGetOrdersCommand implements Command {
         for (int i = 0; i < ordersList.size(); i ++) {
 
             TemplatePrinter templatePrinter = new TemplatePrinter();
+            templatePrinter.setStatus(ordersList.get(i).getStatus());
             templatePrinter.setCustomerName(ordersList.get(i).getCustomer().getName() + " " + ordersList.get(i).getCustomer().getLastName());
             templatePrinter.setIdOrder(ordersList.get(i).getIdOrder());
             templatePrinter.setNumber(ordersList.get(i).getNumber());
@@ -116,6 +117,7 @@ public class AdminGetOrdersCommand implements Command {
         for (int i = 0; i < ownerOrdersList.size(); i ++) {
 
             OwnerPrinter printer = new OwnerPrinter();
+            printer.setStatus(ownerOrdersList.get(i).getStatus());
             printer.setCustomerName(ownerOrdersList.get(i).getCustomer().getName() + " " + ownerOrdersList.get(i).getCustomer().getLastName());
             printer.setIdOrder(ownerOrdersList.get(i).getIdOrder());
             printer.setNumber(ownerOrdersList.get(i).getNumber());

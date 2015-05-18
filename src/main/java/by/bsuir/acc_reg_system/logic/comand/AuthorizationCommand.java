@@ -28,6 +28,7 @@ public class AuthorizationCommand implements Command{
 
             if (customer == null) {
 
+                req.setAttribute("err", "Incorrect password or E-mail!");
                 req.getRequestDispatcher("/enter.jsp").forward(req, resp);
 
             } else {

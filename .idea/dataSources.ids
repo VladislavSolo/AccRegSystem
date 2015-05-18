@@ -31,10 +31,10 @@
     </table>
     <table name="Orders" schema="" catalog="sakila" type="TABLE">
       <column name="IDOrders" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="Deadline" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
       <column name="Customer_IDCustomer" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="Template_IDTemplate" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="Number" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="Status" sqlType="VARCHAR" precision="40" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="IDOrders"/>
       <foreign-key name="fk_Orders_Customer1" columns="Customer_IDCustomer" ref-table="Customer" ref-schema="" ref-catalog="sakila" ref-columns="IDCustomer" update-rule="0" delete-rule="0" deferrability="2"/>
       <foreign-key name="fk_Orders_Template1" columns="Template_IDTemplate" ref-table="Template" ref-schema="" ref-catalog="sakila" ref-columns="IDTemplate" update-rule="0" delete-rule="0" deferrability="2"/>

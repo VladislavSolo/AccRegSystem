@@ -10,16 +10,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class Switch {
+
     private static Switch aSwitch;
     private HttpSession session;
-
-    private AuthorizationCommand authorizationCommand;
-    private RegisterCommand registerCommand;
-    private AddOwnerOrderCommand addOwnerOrderCommand;
-    private GetOrdersCommand getOrdersCommand;
-    private DeleteOrderCommand deleteOrderCommand;
-    private AddOrderCommand addOrderCommand;
-    private SearchOrderCommand searchOrderCommand;
 
     public static Switch sharedSwitch() {
 
@@ -40,39 +33,39 @@ public class Switch {
 
         if (command.equals("register")) {
 
-            registerCommand = new RegisterCommand();
+            RegisterCommand registerCommand = new RegisterCommand();
             registerCommand.execute(req, resp);
 
             req.getServletContext().getRequestDispatcher("/enter.jsp").forward(req, resp);
 
-
         } else if (command.equals("enter")) {
 
-            this.authorizationCommand = new AuthorizationCommand();
-            this.authorizationCommand.execute(req, resp);
+            AuthorizationCommand authorizationCommand = new AuthorizationCommand();
+            authorizationCommand.execute(req, resp);
 
         } else if (command.equals("addOwnerTemplate")) {
 
             req.setAttribute("name", this.session.getAttribute("name"));
-            addOwnerOrderCommand = new AddOwnerOrderCommand();
+
+            AddOwnerOrderCommand addOwnerOrderCommand = new AddOwnerOrderCommand();
             addOwnerOrderCommand.execute(req, resp);
 
-            getOrdersCommand = new GetOrdersCommand();
+            GetOrdersCommand getOrdersCommand = new GetOrdersCommand();
             getOrdersCommand.execute(req, resp);
 
             req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
 
         } else if(command.equals("delete")) {
 
-            deleteOrderCommand = new DeleteOrderCommand();
+            DeleteOrderCommand deleteOrderCommand = new DeleteOrderCommand();
             deleteOrderCommand.execute(req, resp);
 
-            getOrdersCommand = new GetOrdersCommand();
+            GetOrdersCommand getOrdersCommand = new GetOrdersCommand();
             getOrdersCommand.execute(req, resp);
 
             req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
 
-        } else if(command.equals("reject")) {
+        } else if(command.equals("Delete")) {
 
             AdminDeleteOrderCommand adminDeleteOrderCommand = new AdminDeleteOrderCommand();
             adminDeleteOrderCommand.execute(req, resp);
@@ -82,26 +75,26 @@ public class Switch {
 
             req.getServletContext().getRequestDispatcher("/adminTools.jsp").forward(req, resp);
 
-        }else if(command.equals("addOrder")) {
+        } else if(command.equals("addOrder")) {
 
-            addOrderCommand = new AddOrderCommand();
+            AddOrderCommand addOrderCommand = new AddOrderCommand();
             addOrderCommand.execute(req, resp);
 
-            getOrdersCommand = new GetOrdersCommand();
+            GetOrdersCommand getOrdersCommand = new GetOrdersCommand();
             getOrdersCommand.execute(req, resp);
 
             req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
 
         } else if(command.equals("search")) {
 
-            searchOrderCommand = new SearchOrderCommand();
+            SearchOrderCommand searchOrderCommand = new SearchOrderCommand();
             searchOrderCommand.execute(req, resp);
 
             req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
 
         } else if(command.equals("refresh")) {
 
-            getOrdersCommand = new GetOrdersCommand();
+            GetOrdersCommand getOrdersCommand = new GetOrdersCommand();
             getOrdersCommand.execute(req, resp);
 
             req.getServletContext().getRequestDispatcher("/personalAccount.jsp").forward(req, resp);
@@ -114,6 +107,26 @@ public class Switch {
             req.getSession(true).setAttribute("myEmail", "");
 
             req.getServletContext().getRequestDispatcher("/main.jsp").forward(req, resp);
+
+        } else if(command.equals("reject")) {
+
+            AdminRejectOrderCommand adminRejectOrderCommand = new AdminRejectOrderCommand();
+            adminRejectOrderCommand.execute(req, resp);
+
+            AdminGetOrdersCommand adminGetOrdersCommand = new AdminGetOrdersCommand();
+            adminGetOrdersCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/adminTools.jsp").forward(req, resp);
+
+        } else if(command.equals("accept")) {
+
+            AdminAcceptOrderCommad adminAcceptOrderCommad = new AdminAcceptOrderCommad();
+            adminAcceptOrderCommad.execute(req, resp);
+
+            AdminGetOrdersCommand adminGetOrdersCommand = new AdminGetOrdersCommand();
+            adminGetOrdersCommand.execute(req, resp);
+
+            req.getServletContext().getRequestDispatcher("/adminTools.jsp").forward(req, resp);
 
         }
     }

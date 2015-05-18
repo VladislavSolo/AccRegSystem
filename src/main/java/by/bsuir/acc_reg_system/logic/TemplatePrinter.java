@@ -12,6 +12,15 @@ public class TemplatePrinter {
     private String templateSize;
     private String productName;
     private String productType;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getCustomerName() {
         return customerName;

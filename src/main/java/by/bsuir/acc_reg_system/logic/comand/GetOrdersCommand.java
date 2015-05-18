@@ -31,100 +31,102 @@ public class GetOrdersCommand implements Command {
 
         String email = (String) req.getSession(true).getAttribute("myEmail");
 
-        String name = (String) req.getSession(true).getAttribute("name");
+        if (email.equals("")) {
 
-//        if(name.equals("") && email.equals("")) {
-//
-//            req.getRequestDispatcher("/main.jsp").forward(req, resp);
-//        }
+            req.getServletContext().getRequestDispatcher("/enter.jsp").forward(req, resp);
 
-        Customer customer = Factory.getInstance().getCustomerDAO().getCustomerByEmail(email);
+        } else {
 
-        Collection orders = Factory.getInstance().getOrderDAO().getOrdersByCustomer(customer);
+            Customer customer = Factory.getInstance().getCustomerDAO().getCustomerByEmail(email);
 
-        ArrayList<Orders> ordersList = new ArrayList();
+            Collection orders = Factory.getInstance().getOrderDAO().getOrdersByCustomer(customer);
 
-        ArrayList<Template> templatesList = new ArrayList();
+            ArrayList<Orders> ordersList = new ArrayList();
 
-        ArrayList<Product> productsList = new ArrayList();
+            ArrayList<Template> templatesList = new ArrayList();
 
-        ArrayList<Orders> ownerOrdersList = new ArrayList();
+            ArrayList<Product> productsList = new ArrayList();
 
-        ArrayList<OwnerTemplate> ownerTemplatesList = new ArrayList();
+            ArrayList<Orders> ownerOrdersList = new ArrayList();
 
-        Iterator iterator1 = orders.iterator();
+            ArrayList<OwnerTemplate> ownerTemplatesList = new ArrayList();
 
-        while(iterator1.hasNext()) {
+            Iterator iterator1 = orders.iterator();
 
-            Orders order = (Orders) iterator1.next();
+            while (iterator1.hasNext()) {
 
-            if (order.getTemplate() != null) {
+                Orders order = (Orders) iterator1.next();
 
-                ordersList.add(order);
+                if (order.getTemplate() != null) {
 
-                Collection templates = Factory.getInstance().getTemplateDAO().getTemplatesByOrder(order);
+                    ordersList.add(order);
 
-                Iterator iterator2 = templates.iterator();
+                    Collection templates = Factory.getInstance().getTemplateDAO().getTemplatesByOrder(order);
 
-                while (iterator2.hasNext()) {
+                    Iterator iterator2 = templates.iterator();
 
-                    Template template = (Template) iterator2.next();
+                    while (iterator2.hasNext()) {
 
-                    templatesList.add(template);
+                        Template template = (Template) iterator2.next();
 
-                    Collection products = Factory.getInstance().getProductDAO().getProductsByTemplate(template);
+                        templatesList.add(template);
 
-                    Iterator iterator3 = products.iterator();
+                        Collection products = Factory.getInstance().getProductDAO().getProductsByTemplate(template);
 
-                    while (iterator3.hasNext()) {
+                        Iterator iterator3 = products.iterator();
 
-                        Product product = (Product) iterator3.next();
+                        while (iterator3.hasNext()) {
 
-                        productsList.add(product);
+                            Product product = (Product) iterator3.next();
+
+                            productsList.add(product);
+                        }
+                    }
+                } else {
+
+                    ownerOrdersList.add(order);
+
+                    Collection ownerTemplates = Factory.getInstance().getOwnerTemplateDAO().getOwnerTemplatesByOrder(order);
+
+                    Iterator iterator4 = ownerTemplates.iterator();
+
+                    while (iterator4.hasNext()) {
+
+                        OwnerTemplate template = (OwnerTemplate) iterator4.next();
+
+                        ownerTemplatesList.add(template);
                     }
                 }
-            } else {
-
-                ownerOrdersList.add(order);
-
-                Collection ownerTemplates = Factory.getInstance().getOwnerTemplateDAO().getOwnerTemplatesByOrder(order);
-
-                Iterator iterator4 = ownerTemplates.iterator();
-
-                while (iterator4.hasNext()) {
-
-                    OwnerTemplate template = (OwnerTemplate) iterator4.next();
-
-                    ownerTemplatesList.add(template);
-                }
             }
+
+            for (int i = 0; i < ordersList.size(); i++) {
+
+                TemplatePrinter templatePrinter = new TemplatePrinter();
+                templatePrinter.setStatus(ordersList.get(i).getStatus());
+                templatePrinter.setIdOrder(ordersList.get(i).getIdOrder());
+                templatePrinter.setNumber(ordersList.get(i).getNumber());
+                templatePrinter.setTemplateName(templatesList.get(i).getName());
+                templatePrinter.setTemplateType(templatesList.get(i).getType());
+                templatePrinter.setTemplateFormat(templatesList.get(i).getFormat());
+                templatePrinter.setTemplateSize(templatesList.get(i).getSize());
+                templatePrinter.setProductName(productsList.get(i).getName());
+                templatePrinter.setProductType(productsList.get(i).getType());
+                list.add(templatePrinter);
+            }
+
+            for (int i = 0; i < ownerOrdersList.size(); i++) {
+
+                OwnerPrinter printer = new OwnerPrinter();
+                printer.setStatus(ownerOrdersList.get(i).getStatus());
+                printer.setIdOrder(ownerOrdersList.get(i).getIdOrder());
+                printer.setNumber(ownerOrdersList.get(i).getNumber());
+                printer.setName(ownerTemplatesList.get(i).getName());
+                printer.setNote(ownerTemplatesList.get(i).getNote());
+                ownerList.add(printer);
+            }
+
+            req.setAttribute("list", this.list);
+            req.setAttribute("ownerList", this.ownerList);
         }
-
-        for (int i = 0; i < ordersList.size(); i ++) {
-
-            TemplatePrinter templatePrinter = new TemplatePrinter();
-            templatePrinter.setIdOrder(ordersList.get(i).getIdOrder());
-            templatePrinter.setNumber(ordersList.get(i).getNumber());
-            templatePrinter.setTemplateName(templatesList.get(i).getName());
-            templatePrinter.setTemplateType(templatesList.get(i).getType());
-            templatePrinter.setTemplateFormat(templatesList.get(i).getFormat());
-            templatePrinter.setTemplateSize(templatesList.get(i).getSize());
-            templatePrinter.setProductName(productsList.get(i).getName());
-            templatePrinter.setProductType(productsList.get(i).getType());
-            list.add(templatePrinter);
-        }
-
-        for (int i = 0; i < ownerOrdersList.size(); i ++) {
-
-            OwnerPrinter printer = new OwnerPrinter();
-            printer.setIdOrder(ownerOrdersList.get(i).getIdOrder());
-            printer.setNumber(ownerOrdersList.get(i).getNumber());
-            printer.setName(ownerTemplatesList.get(i).getName());
-            printer.setNote(ownerTemplatesList.get(i).getNote());
-            ownerList.add(printer);
-        }
-
-        req.setAttribute("list", this.list);
-        req.setAttribute("ownerList", this.ownerList);
     }
 }

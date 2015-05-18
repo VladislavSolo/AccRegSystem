@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class AdminDeleteOrderCommand implements Command{
-
-
+public class AdminAcceptOrderCommad implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
 
@@ -23,9 +21,10 @@ public class AdminDeleteOrderCommand implements Command{
 
         } else {
 
-            String idString = req.getParameter("idDelete");
+            String idString = req.getParameter("idAccept");
+            String date = req.getParameter("date");
 
-            if (idString.equals("")) {
+            if (idString.equals("") || date.equals("")) {
 
                 req.setAttribute("err", "Enter the values!");
 
@@ -37,13 +36,14 @@ public class AdminDeleteOrderCommand implements Command{
 
                 if (order != null) {
 
-                    Factory.getInstance().getOrderDAO().deleteOrder(order);
+                    order.setStatus("Will be making " + date);
+
+                    Factory.getInstance().getOrderDAO().updateOrder(id, order);
                 } else {
 
                     req.setAttribute("err", "Incorrect value!");
                 }
             }
         }
-
     }
 }
